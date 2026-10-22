@@ -1,16 +1,18 @@
-export interface ProductRating {
-  rate: number
-  count: number
+export interface Producto {
+  id: number;
+  nombre: string;
+  categoria: string;
+  precio: number;
+  stock: number;
+  descripcion: string;
+  imagenUrl: string | null;
 }
 
-export interface Product {
-  id: number
-  title: string
-  price: number
-  description: string
-  category: string
-  image: string
-  rating?: ProductRating
+export interface CrearProductoDTO {
+  nombre: string;
+  categoria: string;
+  precio: number;
+  stock: number;
+  descripcion?: string;
+  imagenUrl?: string;
 }
-
-export type ProductCategory = string
