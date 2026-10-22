@@ -1,4 +1,5 @@
 import { ArrowRight, Menu, Search, X } from 'lucide-react'
+import type { FormEvent } from 'react'
 import { useState } from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { useProductStore } from '../store/useProductStore'
@@ -10,7 +11,7 @@ export default function Navbar() {
   const setCategory = useProductStore((state) => state.setCategory)
   const navigate = useNavigate()
 
-  function submitSearch(event) {
+  function submitSearch(event: FormEvent<HTMLFormElement>): void {
     event.preventDefault()
     setCategory('all')
     navigate('/productos')
@@ -95,10 +96,10 @@ export default function Navbar() {
   )
 }
 
-function navClass(isActive) {
+function navClass(isActive: boolean): string {
   return `text-sm font-semibold transition-colors ${isActive ? 'text-blue-600' : 'text-slate-600 hover:text-blue-600'}`
 }
 
-function mobileNavClass(isActive) {
+function mobileNavClass(isActive: boolean): string {
   return `rounded-lg px-3 py-2.5 text-sm font-semibold ${isActive ? 'bg-blue-50 text-blue-700' : 'text-slate-600'}`
 }

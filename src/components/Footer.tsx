@@ -1,4 +1,5 @@
 import { ArrowUpRight, Github, Instagram, Twitter } from 'lucide-react'
+import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 
 export default function Footer() {
@@ -44,7 +45,12 @@ export default function Footer() {
   )
 }
 
-function SocialLink({ children, label }) {
+interface SocialLinkProps {
+  children: ReactNode
+  label: string
+}
+
+function SocialLink({ children, label }: SocialLinkProps) {
   return (
     <a href="https://github.com" target="_blank" rel="noreferrer" aria-label={label} className="grid h-9 w-9 place-items-center rounded-full border border-slate-200 text-slate-500 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-600">
       {children}

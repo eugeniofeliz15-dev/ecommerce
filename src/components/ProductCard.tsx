@@ -1,8 +1,13 @@
 import { ArrowUpRight, Star } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import type { Product } from '../types/product'
 import { formatCategory, formatPrice } from '../utils/format'
 
-export default function ProductCard({ product }) {
+interface ProductCardProps {
+  product: Product
+}
+
+export default function ProductCard({ product }: ProductCardProps) {
   return (
     <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-card transition duration-300 hover:-translate-y-1 hover:border-blue-100 hover:shadow-xl hover:shadow-slate-900/10">
       <Link
@@ -36,7 +41,7 @@ export default function ProductCard({ product }) {
           </span>
           <span className="mb-0.5 flex items-center gap-1 text-xs font-semibold text-slate-500">
             <Star size={14} className="fill-amber-400 text-amber-400" />
-            {product.rating?.rate?.toFixed(1) ?? '—'}
+            {product.rating?.rate.toFixed(1) ?? '—'}
           </span>
         </div>
       </div>

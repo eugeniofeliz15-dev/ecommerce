@@ -28,7 +28,9 @@ export default function Home() {
     return () => controller.abort()
   }, [fetchProducts, fetchCategories])
 
-  const featured = [...products].sort((a, b) => b.rating.rate - a.rating.rate).slice(0, 4)
+  const featured = [...products]
+    .sort((a, b) => (b.rating?.rate ?? 0) - (a.rating?.rate ?? 0))
+    .slice(0, 4)
 
   return (
     <>
@@ -132,7 +134,12 @@ export default function Home() {
   )
 }
 
-function SectionHeading({ eyebrow, title }) {
+interface SectionHeadingProps {
+  eyebrow: string
+  title: string
+}
+
+function SectionHeading({ eyebrow, title }: SectionHeadingProps) {
   return (
     <div>
       <p className="mb-2 text-[11px] font-extrabold tracking-[0.16em] text-blue-600">{eyebrow}</p>

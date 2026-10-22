@@ -7,8 +7,10 @@ import SearchBar from '../components/SearchBar'
 import { useProductStore } from '../store/useProductStore'
 import { formatCategory } from '../utils/format'
 
+type SortOption = 'featured' | 'price-asc' | 'price-desc' | 'name'
+
 export default function Products() {
-  const [sortBy, setSortBy] = useState('featured')
+  const [sortBy, setSortBy] = useState<SortOption>('featured')
   const products = useProductStore((state) => state.products)
   const categories = useProductStore((state) => state.categories)
   const selectedCategory = useProductStore((state) => state.selectedCategory)
@@ -32,7 +34,7 @@ export default function Products() {
       if (sortBy === 'price-asc') return a.price - b.price
       if (sortBy === 'price-desc') return b.price - a.price
       if (sortBy === 'name') return a.title.localeCompare(b.title)
-      return b.rating.rate - a.rating.rate
+      return (b.rating?.rate ?? 0) - (a.rating?.rate ?? 0)
     })
   }, [products, searchQuery, sortBy])
 
@@ -49,7 +51,10 @@ export default function Products() {
         <label className="flex h-12 items-center gap-2.5 rounded-xl border border-slate-200 bg-white px-4 text-slate-500 shadow-sm sm:w-56">
           <ArrowDownWideNarrow size={17} />
           <span className="sr-only">Ordenar productos</span>
-          <select value={sortBy} onChange={(event) => setSortBy(event.target.value)} className="w-full bg-transparent text-sm font-medium text-slate-700 outline-none">
+          <select value={sortBy} onChange={(event) => {
+            const value = event.target.value
+            if (isSortOption(value)) setSortBy(value)
+          }} className="w-full bg-transparent text-sm font-medium text-slate-700 outline-none">
             <option value="featured">Más valorados</option>
             <option value="price-asc">Precio: menor a mayor</option>
             <option value="price-desc">Precio: mayor a menor</option>
@@ -75,4 +80,8 @@ export default function Products() {
       )}
     </div>
   )
+}
+
+function isSortOption(value: string): value is SortOption {
+  return ['featured', 'price-asc', 'price-desc', 'name'].includes(value)
 }

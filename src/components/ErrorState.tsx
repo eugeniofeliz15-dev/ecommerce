@@ -1,6 +1,11 @@
 import { AlertCircle, RotateCcw } from 'lucide-react'
 
-export default function ErrorState({ message, onRetry }) {
+interface ErrorStateProps {
+  message: string
+  onRetry?: () => void
+}
+
+export default function ErrorState({ message, onRetry }: ErrorStateProps) {
   return (
     <div className="rounded-2xl border border-rose-200 bg-rose-50 px-6 py-12 text-center" role="alert">
       <AlertCircle className="mx-auto mb-3 text-rose-500" size={28} />

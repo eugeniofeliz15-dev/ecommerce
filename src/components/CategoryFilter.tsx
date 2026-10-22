@@ -1,7 +1,11 @@
 import { formatCategory } from '../utils/format'
 import { useProductStore } from '../store/useProductStore'
 
-export default function CategoryFilter({ categories = [] }) {
+interface CategoryFilterProps {
+  categories?: string[]
+}
+
+export default function CategoryFilter({ categories = [] }: CategoryFilterProps) {
   const selectedCategory = useProductStore((state) => state.selectedCategory)
   const setCategory = useProductStore((state) => state.setCategory)
 

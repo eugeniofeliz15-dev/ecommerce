@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { ArrowLeft, ArrowUpRight, Check, PackageCheck, ShieldCheck, Star } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
@@ -5,22 +6,29 @@ import ErrorState from '../components/ErrorState'
 import Loader from '../components/Loader'
 import { getProduct } from '../services/api'
 import { formatCategory, formatPrice } from '../utils/format'
+import type { Product } from '../types/product'
 
 export default function ProductDetail() {
   const { id } = useParams()
-  const [product, setProduct] = useState(null)
+  const [product, setProduct] = useState<Product | null>(null)
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+  const [error, setError] = useState<string | null>(null)
   const [retryCount, setRetryCount] = useState(0)
 
   useEffect(() => {
+    if (!id) {
+      setError('Producto no encontrado.')
+      setLoading(false)
+      return
+    }
+
     const controller = new AbortController()
     setLoading(true)
     setError(null)
     getProduct(id, controller.signal)
       .then(setProduct)
-      .catch((requestError) => {
-        if (requestError.code !== 'ERR_CANCELED') {
+      .catch((requestError: unknown) => {
+        if (!axios.isCancel(requestError)) {
           setError('No pudimos cargar este producto. Inténtalo de nuevo.')
         }
       })
@@ -38,7 +46,7 @@ export default function ProductDetail() {
       </div>
     )
   }
-  if (!product || !product.id) {
+  if (!product) {
     return <div className="page-container py-20 text-center text-slate-600">Producto no encontrado.</div>
   }
 

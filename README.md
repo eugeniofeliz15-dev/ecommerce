@@ -4,12 +4,13 @@ Repositorio oficial para el desarrollo de ecommerce del grupo 2.
 
 ## Techstore
 
-Frontend de ecommerce de demostracion para descubrir productos tecnologicos. Consume productos y categorias desde [FakeStore API](https://fakestoreapi.com/).
+Frontend de ecommerce de demostracion, construido con React y TypeScript, para descubrir productos tecnologicos. Consume productos y categorias desde [FakeStore API](https://fakestoreapi.com/).
 
 ## Requisitos
 
 - Node.js 18 o superior
 - npm
+- TypeScript con comprobacion estricta habilitada en el build
 
 ## Ejecutar localmente
 

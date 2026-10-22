@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 import {
@@ -5,8 +6,23 @@ import {
   getProducts,
   getProductsByCategory,
 } from '../services/api'
+import type { Product } from '../types/product'
 
-export const useProductStore = create(
+interface ProductStore {
+  products: Product[]
+  categories: string[]
+  selectedCategory: string
+  searchQuery: string
+  loading: boolean
+  error: string | null
+  fetchProducts: (category?: string, signal?: AbortSignal) => Promise<void>
+  fetchCategories: (signal?: AbortSignal) => Promise<void>
+  setCategory: (category: string) => void
+  setSearchQuery: (query: string) => void
+  clearError: () => void
+}
+
+export const useProductStore = create<ProductStore>()(
   persist(
     (set, get) => ({
       products: [],
@@ -24,7 +40,7 @@ export const useProductStore = create(
               : await getProductsByCategory(category, signal)
           set({ products, loading: false })
         } catch (error) {
-          if (error.code === 'ERR_CANCELED') return
+          if (axios.isCancel(error)) return
           set({
             loading: false,
             error: 'No pudimos cargar los productos. Inténtalo de nuevo.',
@@ -36,7 +52,7 @@ export const useProductStore = create(
           const categories = await getCategories(signal)
           set({ categories })
         } catch (error) {
-          if (error.code !== 'ERR_CANCELED') {
+          if (!axios.isCancel(error)) {
             set({ error: 'No pudimos cargar las categorías.' })
           }
         }
